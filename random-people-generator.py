@@ -1,4 +1,5 @@
 import random
+import csv
 from pprint import pprint
 from datetime import timedelta, datetime
 
@@ -6,14 +7,14 @@ people = []
 m, f = 'муж', 'жен'
 genders = [m, f]
 last_names = {
-    m: ["Иванов", "Петров", "Сидоров"],
-    f: ["Иванова", "Петрова", "Сидорова"]}
+    m: ["Иванов", "Петров", "Сидоров","Кузнецов","Попов","Васильев","Соколов","Михайлов","Новиков",],
+    f: ["Иванова","Федорова","Морозова","Волкова","Алексеева","Лебедева","Семенова","Егорова","Павлова","Козлова",]}
 first_names = {
-    m: ["Дмитрий", "Сергей", "Михаил"],
-    f: ["Людмила","Татьяна","Лариса","Дарья","Виктория",]}
+    m: ["Дмитрий", "Сергей", "Михаил","Артём","Арсений","Даниил","Роман","Кирилл","Никита","Матвей","Андрей",],
+    f: ["Людмила","Татьяна","Лариса","Дарья","Виктория","София","Анастасия","Мария","Анна","Полина","Елизавета","Екатерина","Ксения","Валерия","Варвара",]}
 father_names = {
-    m: ["Петрович","Николаевич","Александрович"],
-    f: ["Петровна","Николаевна","Александровна","Сергеевна","Юрьевна",]}
+    m: ["Петрович","Николаевич","Александрович","Михайлович","Данилович","Романович","Кириллович","Матвеевич","Андреевич",],
+    f: ["Петровна","Николаевна","Александровна","Сергеевна","Юрьевна","Матвеевна","Дмитриевна",]}
 cities = ["Москва","Нижний Новгород","Саратов","Санкт-Петербург","Тверь","Тула","Самара","Волгоград",]
 streets = ["Полевая","Луговая","Садовая","Ленина","Мира","Гагарина","Королева","Профсоюзная",]
 departments = ["Бухгалтерия","Учебный","Инженерный","Строительный",]
@@ -39,15 +40,25 @@ def get_gender(prop_of_males):
     return genders[0]
     
 
-for _ in range(10):
+def csv_from_list(path_to_csv, list_of_rows):
+    '''Функция для создания CSV файла из списка'''
+    with open (path_to_csv, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter = ';')
+        for _ in list_of_rows:
+            writer.writerow(_)
+    return print(f'Файл {path_to_csv} создан.')
+
+
+for _ in range(150):
     address = f'ул. {random.choice(streets)}, д. {random.randint(1,79)}'\
               f'кв. {random.randint(1,129)}'
-    gender = get_gender(0.2)
+    gender = get_gender(0.4)
     phone_number = f'+7 ({random.randint(0, 999):03}) {random.randint(0, 999):03}-'\
                    f'{random.randint(0, 99):02}-{random.randint(10, 99)}'
     start_date = get_random_date('1.1.2001','31.12.2019')
     end_date = get_random_date(start_date,'31.05.2020')
     # вторая дата end_date должна быть больше, чем вторая дата в start_date
+    department = random.choices(departments, weights=[2,1,1,1])[0]
 
     people.append([
         random.choice(last_names[gender]),              # фамилия
@@ -60,14 +71,13 @@ for _ in range(10):
         random.choice(cities),                          # город
         address,                                        # адрес
         str(random.randint(11111,999999)),              # индекс
-        random.choices(departments, weights=[2,1,1,1]), # отдел
+        department,                                     # отдел
         'Группа ' + random.choice(groups)])             # группа
               
 
+#pprint(people)
+print('Идет запись в файл csv/random_people.csv...')
 
-pprint(people)
-
-##for _ in people:
-##    print (_[3])
-
-
+csv_from_list('csv/random_people.csv', people)
+    
+print('Запись закончена.')
