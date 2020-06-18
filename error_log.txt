@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/mikhail/Code/PyAutomateStuff/raise-assert.py", line 18, in boxPrint
+    raise Exception('"symbol" needs to be a string of length 1.')
+Exception: "symbol" needs to be a string of length 1.
