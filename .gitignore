@@ -1,5 +1,8 @@
+.mypy_cache/
+.vscode/
 *.log
 *.pyc
+*.txt
 *.xlsx
 *.xls
 *.pdf
